@@ -1,0 +1,20 @@
+Date: 22/5/2025
+Time: 2:23
+Phone Number: +919080610799
+Message: 🚨 IoT TEMPERATURE ALERT 🚨 Current temperature: 38.5°C Threshold: 35.0°C Action required: Check cooling system Device ID: TempSensor01 Location: Server Room Alert time: 2025-05-22 02:23:01
+--------------------
+Date: 22/5/2025
+Time: 2:23
+Phone Number: +919080610799
+Message: 🚨 IoT TEMPERATURE ALERT 🚨 Current temperature: 38.5°C Threshold: 35.0°C Action required: Check cooling system Device ID: TempSensor01 Location: Server Room Alert time: 2025-05-22 02:23:31
+--------------------
+Date: 22/5/2025
+Time: 2:24
+Phone Number: +919080610799
+Message: 🚨 IoT TEMPERATURE ALERT 🚨 Current temperature: 38.5°C Threshold: 35.0°C Action required: Check cooling system Device ID: TempSensor01 Location: Server Room Alert time: 2025-05-22 02:23:52
+--------------------
+Date: 22/5/2025
+Time: 2:25
+Phone Number: +919080610799
+Message: 🚨 IoT TEMPERATURE ALERT 🚨 Current temperature: 38.5°C Threshold: 35.0°C Action required: Check cooling system Device ID: TempSensor01 Location: Server Room Alert time: 2025-05-22 02:25:26
+--------------------

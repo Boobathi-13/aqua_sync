@@ -1,0 +1,2293 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Water Metering System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+        }
+        
+        .dashboard {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+        
+        .header p {
+            color: #8892b0;
+            font-size: 1.1rem;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        
+        .gauges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .gauge-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gauge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.2);
+        }
+        
+        .gauge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .gauge-title {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #00d4ff;
+        }
+        
+        .speedometer {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .speedometer svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 12;
+        }
+        
+        .gauge-fill {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease;
+        }
+        
+        .gauge-fill.tank {
+            stroke: url(#tankGradient);
+        }
+        
+        .gauge-fill.home {
+            stroke: url(#homeGradient);
+        }
+        
+        .gauge-fill.total {
+            stroke: url(#totalGradient);
+        }
+        
+        .gauge-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .gauge-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .gauge-unit {
+            font-size: 0.8rem;
+            color: #8892b0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: #8892b0;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        .alert {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0040;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            transform: translateX(450px);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .alert.show {
+            transform: translateX(0);
+        }
+        
+        .alert.leakage {
+            border-color: #ff6b00;
+            background: rgba(255, 107, 0, 0.2);
+        }
+        
+        .alert.theft {
+            border-color: #ff0040;
+            background: rgba(255, 0, 64, 0.2);
+        }
+        
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff0040, #ff6b00, #ff0040);
+            animation: siren 1s infinite;
+        }
+        
+        @keyframes siren {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .alert-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            animation: bounce 0.5s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+        
+        .alert-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .alert-message {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .control-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-align: center;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .valve-status {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .valve-status.open {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+        
+        .valve-status.closed {
+            background: rgba(255, 0, 64, 0.2);
+            color: #ff0040;
+            border: 1px solid #ff0040;
+        }
+        
+        .pulsing-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 64, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .pulsing-bg.active {
+            opacity: 1;
+            animation: alertPulse 2s infinite;
+        }
+        
+        @keyframes alertPulse {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                margin-top: 50px;
+                font-size: 1.8rem;
+            }
+
+            .status-indicator {
+                margin-top: 10px;
+            }
+            
+            .gauges-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .alert-container {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+            
+            .alert {
+                transform: translateY(-150px);
+            }
+            
+            .alert.show {
+                transform: translateY(0);
+            }
+        }
+        
+        .wave-animation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            opacity: 0.3;
+            animation: wave 3s infinite linear;
+        }
+        
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="pulsing-bg" id="pulsing-bg"></div>
+    
+    <div class="dashboard">
+        <div class="status-indicator" id="system-status">
+            🟢 SYSTEM ONLINE
+        </div>
+        <div class="header">
+            <h1>AQUA GUARD SYSTEM</h1>
+            <p>Smart Water Monitoring & Management</p>
+        </div>
+        
+        <div class="gauges-container">
+            <div class="gauge-card">
+                <h3 class="gauge-title">🏭 TANK OUTFLOW</h3>
+                <div class="speedometer">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="tankGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#00d4ff"/>
+                                <stop offset="100%" style="stop-color:#0099cc"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+                        <circle cx="100" cy="100" r="80" class="gauge-fill tank" id="tank-gauge" 
+                                stroke-dasharray="0 502" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="tank-value">0.0</div>
+                        <div class="gauge-unit">L/min</div>
+                    </div>
+                </div>
+                <div class="wave-animation"></div>
+            </div>
+            
+            <div class="gauge-card">
+                <h3 class="gauge-title">🏠 HOME 1 CONSUMPTION</h3>
+                <div class="speedometer">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="homeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#00ff88"/>
+                                <stop offset="100%" style="stop-color:#00cc66"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+                        <circle cx="100" cy="100" r="80" class="gauge-fill home" id="home-gauge" 
+                                stroke-dasharray="0 502" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="home-value">0.0</div>
+                        <div class="gauge-unit">L/min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gauge-card">
+                <h3 class="gauge-title">📊 TOTAL CONSUMPTION</h3>
+                <div class="speedometer">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="totalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#ff6b00"/>
+                                <stop offset="100%" style="stop-color:#ff9500"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+                        <circle cx="100" cy="100" r="80" class="gauge-fill total" id="total-gauge" 
+                                stroke-dasharray="0 502" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="total-value">0.0</div>
+                        <div class="gauge-unit">Liters</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Daily Limit</div>
+                <div class="stat-value" id="daily-limit">50.0 L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Remaining</div>
+                <div class="stat-value" id="remaining">50.0 L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Efficiency</div>
+                <div class="stat-value" id="efficiency">100%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Status</div>
+                <div class="stat-value" id="overall-status">NORMAL</div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <h3 class="control-title">SYSTEM CONTROLS</h3>
+            <div class="controls">
+                <div class="control-item">
+                    <span>Valve Status:</span>
+                    <span class="valve-status open" id="valve-status">OPEN</span>
+                </div>
+                <div class="control-item">
+                    <span>System Mode:</span>
+                    <span>AUTO</span>
+                </div>
+                <div class="control-item">
+                    <span>Last Update:</span>
+                    <span id="last-update">--:--:--</span>
+                </div>
+                <div class="control-item">
+                    <span>Alerts Active:</span>
+                    <span id="alert-count">0</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="alert-container" id="alert-container">
+       
+    </div>
+    
+    <script>
+        class WaterMeterDashboard {
+            constructor() {
+                this.tankFlow = 0;
+                this.homeFlow = 0;
+                this.totalConsumption = 0;
+                this.dailyLimit = 50.0;
+                this.isValveOpen = true;
+                this.alertCount = 0;
+                
+                this.initializeGauges();
+                this.startSimulation();
+            }
+            
+            initializeGauges() {
+                // Initialize gauge circles
+                const circumference = 2 * Math.PI * 80;
+                document.querySelectorAll('.gauge-fill').forEach(gauge => {
+                    gauge.setAttribute('stroke-dasharray', `0 ${circumference}`);
+                });
+            }
+            
+            updateGauge(gaugeId, value, maxValue = 10) {
+                const gauge = document.getElementById(gaugeId);
+                const circumference = 2 * Math.PI * 80;
+                const percentage = Math.min(value / maxValue, 1);
+                const dashArray = percentage * circumference;
+                
+                gauge.setAttribute('stroke-dasharray', `${dashArray} ${circumference}`);
+            }
+            
+            updateDisplay() {
+                // Update gauge values
+                document.getElementById('tank-value').textContent = this.tankFlow.toFixed(1);
+                document.getElementById('home-value').textContent = this.homeFlow.toFixed(1);
+                document.getElementById('total-value').textContent = this.totalConsumption.toFixed(1);
+                
+                // Update gauges
+                this.updateGauge('tank-gauge', this.tankFlow, 10);
+                this.updateGauge('home-gauge', this.homeFlow, 8);
+                this.updateGauge('total-gauge', this.totalConsumption, this.dailyLimit);
+                
+                // Update statistics
+                const remaining = Math.max(this.dailyLimit - this.totalConsumption, 0);
+                document.getElementById('remaining').textContent = remaining.toFixed(1) + ' L';
+                
+                const efficiency = this.tankFlow > 0 ? ((this.homeFlow / this.tankFlow) * 100) : 100;
+                document.getElementById('efficiency').textContent = efficiency.toFixed(0) + '%';
+                
+                // Update valve status
+                const valveStatus = document.getElementById('valve-status');
+                if (this.isValveOpen) {
+                    valveStatus.textContent = 'OPEN';
+                    valveStatus.className = 'valve-status open';
+                } else {
+                    valveStatus.textContent = 'CLOSED';
+                    valveStatus.className = 'valve-status closed';
+                }
+                
+                // Update timestamp
+                const now = new Date();
+                document.getElementById('last-update').textContent = now.toLocaleTimeString();
+                
+                // Check for alerts
+                this.checkForAnomalies();
+                
+                // Update overall status
+                this.updateOverallStatus();
+            }
+            
+            checkForAnomalies() {
+                const leakageThreshold = 0.5;
+                const theftThreshold = 1.0;
+                
+                // Check for leakage or theft
+                if (this.tankFlow > leakageThreshold && this.homeFlow < 0.1) {
+                    if (this.tankFlow > theftThreshold) {
+                        this.showAlert('theft', 'Water Theft Detected!', 
+                                     `High outflow (${this.tankFlow.toFixed(1)} L/min) with no consumption detected.`);
+                    } else {
+                        this.showAlert('leakage', 'Possible Leakage Detected!', 
+                                     `Water flowing from tank (${this.tankFlow.toFixed(1)} L/min) but not reaching home.`);
+                    }
+                }
+                
+                // Check for limit exceeded
+                if (this.totalConsumption >= this.dailyLimit && this.isValveOpen) {
+                    this.isValveOpen = false;
+                    this.showAlert('limit', 'Daily Limit Exceeded!', 
+                                 'Water supply has been automatically shut off.');
+                }
+            }
+            
+            showAlert(type, title, message) {
+                const alertContainer = document.getElementById('alert-container');
+                const alertId = 'alert-' + Date.now();
+                
+                const alertElement = document.createElement('div');
+                alertElement.className = `alert ${type}`;
+                alertElement.id = alertId;
+                alertElement.innerHTML = `
+                    <div class="alert-icon">${this.getAlertIcon(type)}</div>
+                    <div class="alert-title">${title}</div>
+                    <div class="alert-message">${message}</div>
+                `;
+                
+                alertContainer.appendChild(alertElement);
+                
+                // Trigger animation
+                setTimeout(() => {
+                    alertElement.classList.add('show');
+                }, 100);
+                
+                // Add pulsing background for critical alerts
+                if (type === 'theft' || type === 'limit') {
+                    document.getElementById('pulsing-bg').classList.add('active');
+                    document.getElementById('system-status').innerHTML = '🔴 ALERT ACTIVE';
+                }
+                
+                // Update alert count
+                this.alertCount++;
+                document.getElementById('alert-count').textContent = this.alertCount;
+                
+                // Auto-remove alert after 10 seconds
+                setTimeout(() => {
+                    this.removeAlert(alertId);
+                }, 10000);
+            }
+            
+            removeAlert(alertId) {
+                const alertElement = document.getElementById(alertId);
+                if (alertElement) {
+                    alertElement.classList.remove('show');
+                    setTimeout(() => {
+                        alertElement.remove();
+                        this.alertCount = Math.max(0, this.alertCount - 1);
+                        document.getElementById('alert-count').textContent = this.alertCount;
+                        
+                        // Remove pulsing background if no alerts
+                        if (this.alertCount === 0) {
+                            document.getElementById('pulsing-bg').classList.remove('active');
+                            document.getElementById('system-status').innerHTML = '🟢 SYSTEM ONLINE';
+                        }
+                    }, 500);
+                }
+            }
+            
+            getAlertIcon(type) {
+                switch (type) {
+                    case 'leakage': return '💧';
+                    case 'theft': return '🚨';
+                    case 'limit': return '🔒';
+                    default: return '⚠️';
+                }
+            }
+            
+            updateOverallStatus() {
+                const statusElement = document.getElementById('overall-status');
+                
+                if (!this.isValveOpen) {
+                    statusElement.textContent = 'LOCKED';
+                    statusElement.style.color = '#ff0040';
+                } else if (this.alertCount > 0) {
+                    statusElement.textContent = 'ALERT';
+                    statusElement.style.color = '#ff6b00';
+                } else {
+                    statusElement.textContent = 'NORMAL';
+                    statusElement.style.color = '#00ff88';
+                }
+            }
+            
+            startSimulation() {
+                setInterval(() => {
+                    // Simulate realistic water flow patterns
+                    const hour = new Date().getHours();
+                    const minute = new Date().getMinutes();
+                    
+                    // Peak usage hours: 6-9 AM, 6-10 PM
+                    let baseUsage = 0;
+                    if ((hour >= 6 && hour <= 9) || (hour >= 18 && hour <= 22)) {
+                        baseUsage = 2 + Math.random() * 3;
+                    } else if (hour >= 10 && hour <= 17) {
+                        baseUsage = 0.5 + Math.random() * 1.5;
+                    } else {
+                        baseUsage = Math.random() * 0.5;
+                    }
+                    
+                    // Add some random variation
+                    this.homeFlow = Math.max(0, baseUsage + (Math.random() - 0.5) * 1);
+                    
+                    // Tank flow should roughly match home flow (with some efficiency loss)
+                    this.tankFlow = this.homeFlow * (0.9 + Math.random() * 0.2);
+                    
+                    // Occasionally simulate anomalies for demonstration
+                    if (Math.random() < 0.05) { // 5% chance per update
+                        if (Math.random() < 0.7) {
+                            // Simulate leakage
+                            this.tankFlow = 1 + Math.random() * 2;
+                            this.homeFlow = Math.random() * 0.2;
+                        } else {
+                            // Simulate theft
+                            this.tankFlow = 3 + Math.random() * 4;
+                            this.homeFlow = Math.random() * 0.1;
+                        }
+                    }
+                    
+                    // Update total consumption (convert from L/min to L, assuming 1-minute intervals)
+                    if (this.isValveOpen) {
+                        this.totalConsumption += this.homeFlow / 60; // Convert to per-second
+                    } else {
+                        this.homeFlow = 0;
+                        this.tankFlow = Math.random() * 0.2; // Minimal residual flow
+                    }
+                    
+                    this.updateDisplay();
+                }, 1000); // Update every second
+            }
+        }
+        
+        // Initialize dashboard when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new WaterMeterDashboard();
+        });
+    </script>
+</body>
+</html> -->
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Water Metering System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Orbitron', monospace;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #fff;
+        }
+        
+        .dashboard {
+            padding: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            background: linear-gradient(45deg, #00d4ff, #0099cc, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+        }
+        
+        .header p {
+            color: #8892b0;
+            font-size: 1.1rem;
+        }
+        
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 0;
+            padding: 8px 16px;
+            border-radius: 20px;
+            background: rgba(0, 255, 136, 0.2);
+            border: 1px solid #00ff88;
+            color: #00ff88;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .connection-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .connection-controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: center;
+        }
+
+        .connection-input {
+            padding: 10px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+            font-size: 0.9rem;
+        }
+
+        .connection-input::placeholder {
+            color: #8892b0;
+        }
+
+        .connect-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: #fff;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .connect-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+        }
+
+        .connect-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .connection-status {
+            font-size: 0.9rem;
+            padding: 8px 12px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .connection-status.connected {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+
+        .connection-status.disconnected {
+            background: rgba(255, 0, 64, 0.2);
+            color: #ff0040;
+            border: 1px solid #ff0040;
+        }
+
+        .connection-status.connecting {
+            background: rgba(255, 185, 0, 0.2);
+            color: #ffb900;
+            border: 1px solid #ffb900;
+        }
+        
+        .gauges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .gauge-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gauge-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 212, 255, 0.2);
+        }
+        
+        .gauge-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .gauge-title {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #00d4ff;
+        }
+        
+        .speedometer {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 20px;
+            position: relative;
+        }
+        
+        .speedometer svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(-90deg);
+        }
+        
+        .gauge-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 12;
+        }
+        
+        .gauge-fill {
+            fill: none;
+            stroke-width: 12;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease;
+        }
+        
+        .gauge-fill.tank {
+            stroke: url(#tankGradient);
+        }
+        
+        .gauge-fill.home {
+            stroke: url(#homeGradient);
+        }
+        
+        .gauge-fill.total {
+            stroke: url(#totalGradient);
+        }
+        
+        .gauge-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .gauge-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .gauge-unit {
+            font-size: 0.8rem;
+            color: #8892b0;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+        }
+        
+        .stat-title {
+            font-size: 0.9rem;
+            color: #8892b0;
+            margin-bottom: 10px;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        
+        .alert-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
+        }
+        
+        .alert {
+            background: rgba(255, 0, 0, 0.2);
+            border: 2px solid #ff0040;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(10px);
+            transform: translateX(450px);
+            transition: transform 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .alert.show {
+            transform: translateX(0);
+        }
+        
+        .alert.leakage {
+            border-color: #ff6b00;
+            background: rgba(255, 107, 0, 0.2);
+        }
+        
+        .alert.theft {
+            border-color: #ff0040;
+            background: rgba(255, 0, 64, 0.2);
+        }
+        
+        .alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #ff0040, #ff6b00, #ff0040);
+            animation: siren 1s infinite;
+        }
+        
+        @keyframes siren {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+        
+        .alert-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            animation: bounce 0.5s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-5px); }
+        }
+        
+        .alert-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        
+        .alert-message {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        
+        .control-panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+        
+        .control-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #00d4ff;
+            text-align: center;
+        }
+        
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        
+        .control-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        
+        .valve-status {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        
+        .valve-status.open {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 1px solid #00ff88;
+        }
+        
+        .valve-status.closed {
+            background: rgba(255, 0, 64, 0.2);
+            color: #ff0040;
+            border: 1px solid #ff0040;
+        }
+        
+        .pulsing-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 0, 64, 0.1) 0%, transparent 70%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: -1;
+        }
+        
+        .pulsing-bg.active {
+            opacity: 1;
+            animation: alertPulse 2s infinite;
+        }
+        
+        @keyframes alertPulse {
+            0%, 100% { transform: scale(1); opacity: 0.1; }
+            50% { transform: scale(1.1); opacity: 0.2; }
+        }
+
+        .data-log {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(5px);
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .data-log h4 {
+            color: #00d4ff;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .log-entry {
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #8892b0;
+            margin-bottom: 5px;
+            padding: 3px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .log-entry.error {
+            color: #ff6b00;
+        }
+
+        .log-entry.alert {
+            color: #ff0040;
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                margin-top: 50px;
+                font-size: 1.8rem;
+            }
+
+            .status-indicator {
+                margin-top: 10px;
+            }
+            
+            .gauges-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .alert-container {
+                left: 20px;
+                right: 20px;
+                max-width: none;
+            }
+            
+            .alert {
+                transform: translateY(-150px);
+            }
+            
+            .alert.show {
+                transform: translateY(0);
+            }
+        }
+        
+        .wave-animation {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 20px;
+            background: linear-gradient(90deg, #00d4ff, #0099cc);
+            opacity: 0.3;
+            animation: wave 3s infinite linear;
+        }
+        
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="pulsing-bg" id="pulsing-bg"></div>
+    
+    <div class="dashboard">
+        <div class="status-indicator" id="system-status">
+            🔴 DISCONNECTED
+        </div>
+        <div class="header">
+            <h1>AQUA GUARD SYSTEM</h1>
+            <p>Smart Water Monitoring & Management</p>
+        </div>
+
+        <div class="connection-panel">
+            <div class="connection-controls">
+                <input type="text" class="connection-input" id="websocket-url" 
+                       placeholder="WebSocket URL (ws://192.168.1.100:8080)" 
+                       value="ws://localhost:8080">
+                <button class="connect-btn" id="connect-btn">Connect to STM32</button>
+                <div class="connection-status disconnected" id="connection-status">
+                    DISCONNECTED
+                </div>
+            </div>
+        </div>
+        
+        <div class="gauges-container">
+            <div class="gauge-card">
+                <h3 class="gauge-title">🏭 TANK OUTFLOW</h3>
+                <div class="speedometer">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="tankGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#00d4ff"/>
+                                <stop offset="100%" style="stop-color:#0099cc"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+                        <circle cx="100" cy="100" r="80" class="gauge-fill tank" id="tank-gauge" 
+                                stroke-dasharray="0 502" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="tank-value">0.0</div>
+                        <div class="gauge-unit">L/min</div>
+                    </div>
+                </div>
+                <div class="wave-animation"></div>
+            </div>
+            
+            <div class="gauge-card">
+                <h3 class="gauge-title">🏠 HOME 1 CONSUMPTION</h3>
+                <div class="speedometer">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="homeGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#00ff88"/>
+                                <stop offset="100%" style="stop-color:#00cc66"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+                        <circle cx="100" cy="100" r="80" class="gauge-fill home" id="home-gauge" 
+                                stroke-dasharray="0 502" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="home-value">0.0</div>
+                        <div class="gauge-unit">L/min</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="gauge-card">
+                <h3 class="gauge-title">📊 TOTAL CONSUMPTION</h3>
+                <div class="speedometer">
+                    <svg viewBox="0 0 200 200">
+                        <defs>
+                            <linearGradient id="totalGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#ff6b00"/>
+                                <stop offset="100%" style="stop-color:#ff9500"/>
+                            </linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+                        <circle cx="100" cy="100" r="80" class="gauge-fill total" id="total-gauge" 
+                                stroke-dasharray="0 502" stroke-dashoffset="0"/>
+                    </svg>
+                    <div class="gauge-center">
+                        <div class="gauge-value" id="total-value">0.0</div>
+                        <div class="gauge-unit">Liters</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-title">Daily Limit</div>
+                <div class="stat-value" id="daily-limit">50.0 L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Remaining</div>
+                <div class="stat-value" id="remaining">50.0 L</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Efficiency</div>
+                <div class="stat-value" id="efficiency">100%</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Status</div>
+                <div class="stat-value" id="overall-status">OFFLINE</div>
+            </div>
+        </div>
+        
+        <div class="control-panel">
+            <h3 class="control-title">SYSTEM CONTROLS</h3>
+            <div class="controls">
+                <div class="control-item">
+                    <span>Valve Status:</span>
+                    <span class="valve-status closed" id="valve-status">UNKNOWN</span>
+                </div>
+                <div class="control-item">
+                    <span>System Mode:</span>
+                    <span>AUTO</span>
+                </div>
+                <div class="control-item">
+                    <span>Last Update:</span>
+                    <span id="last-update">--:--:--</span>
+                </div>
+                <div class="control-item">
+                    <span>Alerts Active:</span>
+                    <span id="alert-count">0</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="data-log">
+            <h4>📊 Real-time Data Log</h4>
+            <div id="log-container">
+                <div class="log-entry">System initialized - waiting for STM32 connection...</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="alert-container" id="alert-container">
+
+    </div>
+    
+    <script>
+        class STM32WaterMeterDashboard {
+            constructor() {
+                this.websocket = null;
+                this.isConnected = false;
+                this.tankFlow = 0;
+                this.homeFlow = 0;
+                this.totalConsumption = 0;
+                this.dailyLimit = 50.0;
+                this.isValveOpen = false;
+                this.alertCount = 0;
+                this.lastDataTime = null;
+                
+                this.initializeGauges();
+                this.initializeEventListeners();
+                this.startHeartbeat();
+            }
+            
+            initializeGauges() {
+                const circumference = 2 * Math.PI * 80;
+                document.querySelectorAll('.gauge-fill').forEach(gauge => {
+                    gauge.setAttribute('stroke-dasharray', `0 ${circumference}`);
+                });
+            }
+
+            initializeEventListeners() {
+                document.getElementById('connect-btn').addEventListener('click', () => {
+                    if (this.isConnected) {
+                        this.disconnect();
+                    } else {
+                        this.connect();
+                    }
+                });
+            }
+
+            connect() {
+                const url = document.getElementById('websocket-url').value;
+                if (!url) {
+                    this.addLogEntry('Please enter a WebSocket URL', 'error');
+                    return;
+                }
+
+                this.updateConnectionStatus('connecting');
+                this.addLogEntry(`Attempting to connect to ${url}...`);
+
+                try {
+                    this.websocket = new WebSocket(url);
+                    
+                    this.websocket.onopen = () => {
+                        this.isConnected = true;
+                        this.updateConnectionStatus('connected');
+                        this.addLogEntry('Connected to STM32 successfully!');
+                        document.getElementById('system-status').innerHTML = '🟢 SYSTEM ONLINE';
+                    };
+
+                    this.websocket.onmessage = (event) => {
+                        this.handleSTM32Data(event.data);
+                    };
+
+                    this.websocket.onclose = () => {
+                        this.isConnected = false;
+                        this.updateConnectionStatus('disconnected');
+                        this.addLogEntry('Connection to STM32 lost', 'error');
+                        document.getElementById('system-status').innerHTML = '🔴 DISCONNECTED';
+                    };
+
+                    this.websocket.onerror = (error) => {
+                        this.addLogEntry('WebSocket error occurred', 'error');
+                        console.error('WebSocket error:', error);
+                    };
+
+                } catch (error) {
+                    this.addLogEntry('Failed to connect: ' + error.message, 'error');
+                    this.updateConnectionStatus('disconnected');
+                }
+            }
+
+            disconnect() {
+                if (this.websocket) {
+                    this.websocket.close();
+                    this.websocket = null;
+                }
+                this.isConnected = false;
+                this.updateConnectionStatus('disconnected');
+                this.addLogEntry('Disconnected from STM32');
+            }
+
+            updateConnectionStatus(status) {
+                const statusElement = document.getElementById('connection-status');
+                const connectBtn = document.getElementById('connect-btn');
+                
+                statusElement.className = `connection-status ${status}`;
+                
+                switch (status) {
+                    case 'connected':
+                        statusElement.textContent = 'CONNECTED';
+                        connectBtn.textContent = 'Disconnect';
+                        connectBtn.disabled = false;
+                        break;
+                    case 'connecting':
+                        statusElement.textContent = 'CONNECTING...';
+                        connectBtn.disabled = true;
+                        break;
+                    case 'disconnected':
+                        statusElement.textContent = 'DISCONNECTED';
+                        connectBtn.textContent = 'Connect to STM32';
+                        connectBtn.disabled = false;
+                        break;
+                }
+            }
+
+            handleSTM32Data(data) {
+                try {
+                    // Parse the incoming data from STM32
+                    // Expected format: "Tank Flow: X.X L, Home 1 Flow: X.X L, Total Home 1: X.X L"
+                    
+                    this.lastDataTime = new Date();
+                    this.addLogEntry(`Received: ${data}`);
+                    
+                    // Extract values using regex
+                    const tankMatch = data.match(/Tank Flow: ([\d.]+) L/);
+                    const homeMatch = data.match(/Home 1 Flow: ([\d.]+) L/);
+                    const totalMatch = data.match(/Total Home 1: ([\d.]+) L/);
+                    
+                    if (tankMatch) {
+                        this.tankFlow = parseFloat(tankMatch[1]) * 60; // Convert to L/min
+                    }
+                    
+                    if (homeMatch) {
+                        this.homeFlow = parseFloat(homeMatch[1]) * 60; // Convert to L/min
+                    }
+                    
+                    if (totalMatch) {
+                        this.totalConsumption = parseFloat(totalMatch[1]);
+                    }
+
+                    // Check for alerts in the data
+                    if (data.includes('⚠️ ALERT: Possible Leakage or Theft Detected!')) {
+                        this.handleSTM32Alert('leakage');
+                    }
+                    
+                    if (data.includes('🔒 Water limit exceeded! Valve Closed')) {
+                        this.handleSTM32Alert('limit');
+                        this.isValveOpen = false;
+                    } else if (this.totalConsumption < this.dailyLimit) {
+                        this.isValveOpen = true;
+                    }
+
+                    this.updateDisplay();
+                    
+                } catch (error) {
+                    this.addLogEntry('Error parsing STM32 data: ' + error.message, 'error');
+                    console.error('Data parsing error:', error);
+                }
+            }
+
+            handleSTM32Alert(type) {
+                let title, message;
+                
+                switch (type) {
+                    case 'leakage':
+                        title = 'Leakage/Theft Detected!';
+                        message = `Tank outflow: ${this.tankFlow.toFixed(1)} L/min, Home consumption: ${this.homeFlow.toFixed(1)} L/min`;
+                        this.addLogEntry('ALERT: Possible leakage or theft detected!', 'alert');
+                        break;
+                    case 'limit':
+                        title = 'Daily Limit Exceeded!';
+                        message = 'Water supply has been automatically shut off by STM32.';
+                        this.addLogEntry('ALERT: Daily water limit exceeded!', 'alert');
+                        break;
+                }
+                
+                this.showAlert(type, title, message);
+            }
+
+            addLogEntry(message, type = 'normal') {
+                const logContainer = document.getElementById('log-container');
+                const entry = document.createElement('div');
+                entry.className = `log-entry ${type}`;
+                
+                const timestamp = new Date().toLocaleTimeString();
+                entry.textContent = `[${timestamp}] ${message}`;
+                
+                logContainer.appendChild(entry);
+                
+                // Keep only last 50 entries
+                while (logContainer.children.length > 50) {
+                    logContainer.removeChild(logContainer.firstChild);
+                }
+                
+                // Scroll to bottom
+                logContainer.scrollTop = logContainer.scrollHeight;
+            }
+            
+            updateGauge(gaugeId, value, maxValue = 10) {
+                const gauge = document.getElementById(gaugeId);
+                const circumference = 2 * Math.PI * 80;
+                const percentage = Math.min(value / maxValue, 1);
+                const dashArray = percentage * circumference;
+                
+                gauge.setAttribute('stroke-dasharray', `${dashArray} ${circumference}`);
+            }
+            
+            updateDisplay() {
+                // Update gauge values
+                document.getElementById('tank-value').textContent = this.tankFlow.toFixed(1);
+                document.getElementById('home-value').textContent = this.homeFlow.toFixed(1);
+                document.getElementById('total-value').textContent = this.totalConsumption.toFixed(1);
+                
+                // Update gauges (max values: tank=10 L/min, home=8 L/min, total=dail -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Water Metering System</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+    
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: 'Orbitron', monospace;
+        background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 50%, #16213e 100%);
+        min-height: 100vh;
+        overflow-x: hidden;
+        color: #fff;
+    }
+    
+    .dashboard {
+        padding: 20px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .header {
+        text-align: center;
+        margin-bottom: 30px;
+        position: relative;
+    }
+    
+    .header h1 {
+        font-size: 2.5rem;
+        font-weight: 900;
+        background: linear-gradient(45deg, #00d4ff, #0099cc, #00ff88);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 10px;
+        text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+    }
+    
+    .header p {
+        color: #8892b0;
+        font-size: 1.1rem;
+    }
+    
+    .status-indicator {
+        position: absolute;
+        top: 10px;
+        right: 0;
+        padding: 8px 16px;
+        border-radius: 20px;
+        background: rgba(0, 255, 136, 0.2);
+        border: 1px solid #00ff88;
+        color: #00ff88;
+        font-size: 0.9rem;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.7; }
+    }
+
+    .connection-panel {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+
+    .connection-controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        align-items: center;
+    }
+
+    .connection-input {
+        padding: 10px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        color: #fff;
+        font-family: 'Orbitron', monospace;
+        font-size: 0.9rem;
+    }
+
+    .connection-input::placeholder {
+        color: #8892b0;
+    }
+
+    .connect-btn {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        background: linear-gradient(45deg, #00d4ff, #0099cc);
+        color: #fff;
+        font-family: 'Orbitron', monospace;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .connect-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 212, 255, 0.4);
+    }
+
+    .connect-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .connection-status {
+        font-size: 0.9rem;
+        padding: 8px 12px;
+        border-radius: 15px;
+        text-align: center;
+    }
+
+    .connection-status.connected {
+        background: rgba(0, 255, 136, 0.2);
+        color: #00ff88;
+        border: 1px solid #00ff88;
+    }
+
+    .connection-status.disconnected {
+        background: rgba(255, 0, 64, 0.2);
+        color: #ff0040;
+        border: 1px solid #ff0040;
+    }
+
+    .connection-status.connecting {
+        background: rgba(255, 185, 0, 0.2);
+        color: #ffb900;
+        border: 1px solid #ffb900;
+    }
+    
+    .gauges-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+    
+    .gauge-card {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 25px;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .gauge-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 40px rgba(0, 212, 255, 0.2);
+    }
+    
+    .gauge-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+        animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { left: -100%; }
+        100% { left: 100%; }
+    }
+    
+    .gauge-title {
+        text-align: center;
+        font-size: 1.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #00d4ff;
+    }
+    
+    .speedometer {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto 20px;
+        position: relative;
+    }
+    
+    .speedometer svg {
+        width: 100%;
+        height: 100%;
+        transform: rotate(-90deg);
+    }
+    
+    .gauge-bg {
+        fill: none;
+        stroke: rgba(255, 255, 255, 0.1);
+        stroke-width: 12;
+    }
+    
+    .gauge-fill {
+        fill: none;
+        stroke-width: 12;
+        stroke-linecap: round;
+        transition: stroke-dasharray 0.5s ease;
+    }
+    
+    .gauge-fill.tank {
+        stroke: url(#tankGradient);
+    }
+    
+    .gauge-fill.home {
+        stroke: url(#homeGradient);
+    }
+    
+    .gauge-fill.total {
+        stroke: url(#totalGradient);
+    }
+    
+    .gauge-center {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .gauge-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #fff;
+    }
+    
+    .gauge-unit {
+        font-size: 0.8rem;
+        color: #8892b0;
+    }
+    
+    .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    
+    .stat-card {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(5px);
+    }
+    
+    .stat-title {
+        font-size: 0.9rem;
+        color: #8892b0;
+        margin-bottom: 10px;
+    }
+    
+    .stat-value {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #fff;
+    }
+    
+    .alert-container {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        max-width: 400px;
+    }
+    
+    .alert {
+        background: rgba(255, 0, 0, 0.2);
+        border: 2px solid #ff0040;
+        border-radius: 15px;
+        padding: 20px;
+        margin-bottom: 15px;
+        backdrop-filter: blur(10px);
+        transform: translateX(450px);
+        transition: transform 0.5s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .alert.show {
+        transform: translateX(0);
+    }
+    
+    .alert.leakage {
+        border-color: #ff6b00;
+        background: rgba(255, 107, 0, 0.2);
+    }
+    
+    .alert.theft {
+        border-color: #ff0040;
+        background: rgba(255, 0, 64, 0.2);
+    }
+    
+    .alert::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #ff0040, #ff6b00, #ff0040);
+        animation: siren 1s infinite;
+    }
+    
+    @keyframes siren {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.3; }
+    }
+    
+    .alert-icon {
+        font-size: 2rem;
+        margin-bottom: 10px;
+        animation: bounce 0.5s infinite alternate;
+    }
+    
+    @keyframes bounce {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(-5px); }
+    }
+    
+    .alert-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: #fff;
+    }
+    
+    .alert-message {
+        font-size: 0.9rem;
+        color: #ccc;
+    }
+    
+    .control-panel {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 20px;
+        padding: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .control-title {
+        font-size: 1.3rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+        color: #00d4ff;
+        text-align: center;
+    }
+    
+    .controls {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+    }
+    
+    .control-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    
+    .valve-status {
+        padding: 5px 12px;
+        border-radius: 15px;
+        font-size: 0.8rem;
+        font-weight: 700;
+    }
+    
+    .valve-status.open {
+        background: rgba(0, 255, 136, 0.2);
+        color: #00ff88;
+        border: 1px solid #00ff88;
+    }
+    
+    .valve-status.closed {
+        background: rgba(255, 0, 64, 0.2);
+        color: #ff0040;
+        border: 1px solid #ff0040;
+    }
+    
+    .pulsing-bg {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 50% 50%, rgba(255, 0, 64, 0.1) 0%, transparent 70%);
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: -1;
+    }
+    
+    .pulsing-bg.active {
+        opacity: 1;
+        animation: alertPulse 2s infinite;
+    }
+    
+    @keyframes alertPulse {
+        0%, 100% { transform: scale(1); opacity: 0.1; }
+        50% { transform: scale(1.1); opacity: 0.2; }
+    }
+
+    .data-log {
+        background: rgba(255, 255, 255, 0.03);
+        border-radius: 15px;
+        padding: 20px;
+        margin-top: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(5px);
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .data-log h4 {
+        color: #00d4ff;
+        margin-bottom: 15px;
+        font-size: 1.1rem;
+    }
+
+    .log-entry {
+        font-family: 'Courier New', monospace;
+        font-size: 0.8rem;
+        color: #8892b0;
+        margin-bottom: 5px;
+        padding: 3px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .log-entry.error {
+        color: #ff6b00;
+    }
+
+    .log-entry.alert {
+        color: #ff0040;
+    }
+    
+    @media (max-width: 768px) {
+        .header h1 {
+            margin-top: 50px;
+            font-size: 1.8rem;
+        }
+
+        .status-indicator {
+            margin-top: 10px;
+        }
+        
+        .gauges-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .alert-container {
+            left: 20px;
+            right: 20px;
+            max-width: none;
+        }
+        
+        .alert {
+            transform: translateY(-150px);
+        }
+        
+        .alert.show {
+            transform: translateY(0);
+        }
+    }
+    
+    .wave-animation {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 20px;
+        background: linear-gradient(90deg, #00d4ff, #0099cc);
+        opacity: 0.3;
+        animation: wave 3s infinite linear;
+    }
+    
+    @keyframes wave {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+    }
+</style>
+</head>
+<body>
+
+  <div class="dashboard">
+    <div class="status-indicator" id="system-status">🔴 DISCONNECTED</div>
+
+    <div class="header">
+      <h1>AQUA GUARD SYSTEM</h1>
+      <p>Smart Water Monitoring & Management</p>
+    </div>
+
+    <div class="connection-panel">
+      <div class="connection-controls">
+        <input type="text" class="connection-input" id="websocket-url" placeholder="WebSocket URL" value="ws://localhost:8080">
+        <button class="connect-btn" id="connect-btn">Connect to STM32</button>
+        <div class="connection-status disconnected" id="connection-status">DISCONNECTED</div>
+      </div>
+    </div>
+
+    <div class="gauges-container">
+      <!-- TANK -->
+      <div class="gauge-card">
+        <h3 class="gauge-title">🏭 TANK OUTFLOW</h3>
+        <div class="speedometer">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="tankGradient"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0099cc"/></linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+            <circle cx="100" cy="100" r="80" class="gauge-fill tank" id="tank-gauge" stroke-dasharray="0 502" stroke-dashoffset="0"/>
+          </svg>
+          <div class="gauge-center">
+            <div class="gauge-value" id="tank-value">0.0</div>
+            <div class="gauge-unit">L/min</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HOME 1 -->
+      <div class="gauge-card">
+        <h3 class="gauge-title">🏠 HOME 1 CONSUMPTION</h3>
+        <div class="speedometer">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="homeGradient"><stop offset="0%" stop-color="#00ff88"/><stop offset="100%" stop-color="#00cc66"/></linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+            <circle cx="100" cy="100" r="80" class="gauge-fill home" id="home-gauge" stroke-dasharray="0 502" stroke-dashoffset="0"/>
+          </svg>
+          <div class="gauge-center">
+            <div class="gauge-value" id="home-value">0.0</div>
+            <div class="gauge-unit">L/min</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TOTAL -->
+      <div class="gauge-card">
+        <h3 class="gauge-title">📊 TOTAL CONSUMPTION</h3>
+        <div class="speedometer">
+          <svg viewBox="0 0 200 200">
+            <defs>
+              <linearGradient id="totalGradient"><stop offset="0%" stop-color="#ff6b00"/><stop offset="100%" stop-color="#ff9500"/></linearGradient>
+            </defs>
+            <circle cx="100" cy="100" r="80" class="gauge-bg"/>
+            <circle cx="100" cy="100" r="80" class="gauge-fill total" id="total-gauge" stroke-dasharray="0 502" stroke-dashoffset="0"/>
+          </svg>
+          <div class="gauge-center">
+            <div class="gauge-value" id="total-value">0.0</div>
+            <div class="gauge-unit">Liters</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-title">Daily Limit</div><div class="stat-value" id="daily-limit">50.0 L</div></div>
+      <div class="stat-card"><div class="stat-title">Remaining</div><div class="stat-value" id="remaining">50.0 L</div></div>
+      <div class="stat-card"><div class="stat-title">Efficiency</div><div class="stat-value" id="efficiency">100%</div></div>
+      <div class="stat-card"><div class="stat-title">Status</div><div class="stat-value" id="overall-status">OFFLINE</div></div>
+    </div>
+
+    <div class="control-panel">
+      <h3 class="control-title">SYSTEM CONTROLS</h3>
+      <div class="controls">
+        <div class="control-item"><span>Valve Status:</span> <span class="valve-status closed" id="valve-status">UNKNOWN</span></div>
+        <div class="control-item"><span>System Mode:</span> <span>AUTO</span></div>
+        <div class="control-item"><span>Last Update:</span> <span id="last-update">--:--:--</span></div>
+        <div class="control-item"><span>Alerts Active:</span> <span id="alert-count">0</span></div>
+      </div>
+    </div>
+
+    <div class="data-log">
+      <h4>📊 Real-time Data Log</h4>
+      <div id="log-container"><div class="log-entry">System initialized - waiting for STM32 connection...</div></div>
+    </div>
+
+    <div class="alert-container" id="alert-container"></div>
+  </div>
+
+  <script>
+    const circumference = 2 * Math.PI * 80;
+
+    function updateGauge(gaugeId, value, max = 100) {
+      const percent = Math.min(value / max, 1);
+      const offset = circumference * (1 - percent);
+      document.getElementById(gaugeId).setAttribute("stroke-dasharray", `${circumference} ${circumference}`);
+      document.getElementById(gaugeId).setAttribute("stroke-dashoffset", offset);
+    }
+
+    function addLog(message) {
+      const logContainer = document.getElementById("log-container");
+      const entry = document.createElement("div");
+      entry.className = "log-entry";
+      entry.textContent = `${new Date().toLocaleTimeString()} - ${message}`;
+      logContainer.prepend(entry);
+    }
+
+    let ws;
+    let isConnected = false;
+
+    document.getElementById("connect-btn").onclick = function () {
+      const url = document.getElementById("websocket-url").value;
+      if (isConnected) {
+        ws.close();
+        return;
+      }
+
+      ws = new WebSocket(url);
+      ws.onopen = () => {
+        isConnected = true;
+        document.getElementById("connect-btn").textContent = "Disconnect";
+        document.getElementById("connection-status").textContent = "CONNECTED";
+        document.getElementById("connection-status").className = "connection-status connected";
+        document.getElementById("system-status").textContent = "🟢 SYSTEM ONLINE";
+        addLog("Connected to STM32.");
+      };
+
+      ws.onmessage = (event) => {
+        addLog(`Received: ${event.data}`);
+        const tank = parseFloat((event.data.match(/Tank Flow: ([\d.]+)/) || [])[1]) || 0;
+        const home = parseFloat((event.data.match(/Home 1 Flow: ([\d.]+)/) || [])[1]) || 0;
+        const total = parseFloat((event.data.match(/Total Home 1: ([\d.]+)/) || [])[1]) || 0;
+
+        document.getElementById("tank-value").textContent = tank.toFixed(1);
+        document.getElementById("home-value").textContent = home.toFixed(1);
+        document.getElementById("total-value").textContent = total.toFixed(1);
+
+        updateGauge("tank-gauge", tank, 100);
+        updateGauge("home-gauge", home, 100);
+        updateGauge("total-gauge", total, 100);
+
+        const remaining = Math.max(50 - total, 0);
+        document.getElementById("remaining").textContent = `${remaining.toFixed(1)} L`;
+        document.getElementById("efficiency").textContent = `${((remaining / 50) * 100).toFixed(0)}%`;
+        document.getElementById("last-update").textContent = new Date().toLocaleTimeString();
+        document.getElementById("valve-status").textContent = tank > 0 ? "OPEN" : "CLOSED";
+        document.getElementById("valve-status").className = tank > 0 ? "valve-status open" : "valve-status closed";
+        document.getElementById("overall-status").textContent = "ONLINE";
+      };
+
+      ws.onclose = () => {
+        isConnected = false;
+        document.getElementById("connect-btn").textContent = "Connect to STM32";
+        document.getElementById("connection-status").textContent = "DISCONNECTED";
+        document.getElementById("connection-status").className = "connection-status disconnected";
+        document.getElementById("system-status").textContent = "🔴 DISCONNECTED";
+        addLog("Disconnected from STM32.");
+      };
+
+      ws.onerror = () => {
+        addLog("WebSocket error.");
+      };
+    };
+  </script>
+</body>
+</html>

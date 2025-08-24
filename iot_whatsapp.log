@@ -1,0 +1,138 @@
+2025-05-22 02:23:01,229 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:23:01,230 - IoT_WhatsApp - INFO - Sending immediate message to +919080610799
+2025-05-22 02:23:14,829 - IoT_WhatsApp - INFO - Immediate message sent successfully to +919080610799
+2025-05-22 02:23:31,820 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:23:31,821 - IoT_WhatsApp - INFO - Sending immediate message to +919080610799
+2025-05-22 02:23:45,342 - IoT_WhatsApp - INFO - Immediate message sent successfully to +919080610799
+2025-05-22 02:23:52,273 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:23:52,273 - IoT_WhatsApp - INFO - Sending immediate message to +919080610799
+2025-05-22 02:24:05,840 - IoT_WhatsApp - INFO - Immediate message sent successfully to +919080610799
+2025-05-22 02:25:26,515 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:25:26,516 - IoT_WhatsApp - INFO - Sending immediate message to +919080610799
+2025-05-22 02:25:40,242 - IoT_WhatsApp - INFO - Immediate message sent successfully to +919080610799
+2025-05-22 02:31:09,600 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:31:09,601 - WDM - INFO - ====== WebDriver manager ======
+2025-05-22 02:31:11,098 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:31:11,938 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:31:12,754 - WDM - INFO - There is no [win64] chromedriver "136.0.7103.113" for browser google-chrome "136.0.7103" in cache
+2025-05-22 02:31:12,754 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:31:14,836 - WDM - INFO - WebDriver version 136.0.7103.113 selected
+2025-05-22 02:31:14,843 - WDM - INFO - Modern chrome version https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.113/win32/chromedriver-win32.zip
+2025-05-22 02:31:14,843 - WDM - INFO - About to download new driver from https://storage.googleapis.com/chrome-for-testing-public/136.0.7103.113/win32/chromedriver-win32.zip
+2025-05-22 02:31:15,688 - WDM - INFO - Driver downloading response is 200
+2025-05-22 02:31:22,174 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:31:24,609 - WDM - INFO - Driver has been saved in cache [C:\Users\BOOBATHIRAJA.K.M\.wdm\drivers\chromedriver\win64\136.0.7103.113]
+2025-05-22 02:31:24,613 - IoT_WhatsApp - ERROR - Failed to initialize Selenium WebDriver: WebDriver.__init__() got multiple values for argument 'options'
+2025-05-22 02:31:24,614 - IoT_WhatsApp - ERROR - Failed to initialize Selenium, falling back to alternative method
+2025-05-22 02:31:24,614 - IoT_WhatsApp - INFO - Opening WhatsApp Web directly: https://web.whatsapp.com/send?phone=919080610799&text=%0A%20%20%20%20%20%20%20%20%F0%9F%9A%A8%20IoT%20TEMPERATURE%20ALERT%20%F0%9F%9A%A8%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Current%20temperature%3A%2038.5%C2%B0C%0A%20%20%20%20%20%20%20%20Threshold%3A%2035.0%C2%B0C%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Action%20required%3A%20Check%20cooling%20system%0A%20%20%20%20%20%20%20%20Device%20ID%3A%20TempSensor01%0A%20%20%20%20%20%20%20%20Location%3A%20Server%20Room%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Alert%20time%3A%202025-05-22%2002%3A31%3A09%0A%20%20%20%20%20%20%20%20
+2025-05-22 02:31:24,754 - IoT_WhatsApp - INFO - Waiting for WhatsApp Web to load...
+2025-05-22 02:31:54,756 - IoT_WhatsApp - INFO - Attempting to send message via keyboard press...
+2025-05-22 02:31:59,859 - IoT_WhatsApp - INFO - Alternative message sent to 919080610799
+2025-05-22 02:38:13,470 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:38:13,471 - WDM - INFO - ====== WebDriver manager ======
+2025-05-22 02:38:14,771 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:38:15,618 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:38:16,334 - WDM - INFO - Driver [C:\Users\BOOBATHIRAJA.K.M\.wdm\drivers\chromedriver\win64\136.0.7103.113\chromedriver-win32/chromedriver.exe] found in cache
+2025-05-22 02:39:21,317 - IoT_WhatsApp - ERROR - Failed to initialize Selenium WebDriver: Message: session not created: DevToolsActivePort file doesn't exist
+Stacktrace:
+	GetHandleVerifier [0x0106FC03+61635]
+	GetHandleVerifier [0x0106FC44+61700]
+	(No symbol) [0x00E905D3]
+	(No symbol) [0x00EC89E9]
+	(No symbol) [0x00EC423B]
+	(No symbol) [0x00EBF6C9]
+	(No symbol) [0x00F08DF3]
+	(No symbol) [0x00F0880A]
+	(No symbol) [0x00EFD096]
+	(No symbol) [0x00ECC840]
+	(No symbol) [0x00ECD6A4]
+	GetHandleVerifier [0x012F4523+2701795]
+	GetHandleVerifier [0x012EFCA6+2683238]
+	GetHandleVerifier [0x0130A9EE+2793134]
+	GetHandleVerifier [0x010868C5+155013]
+	GetHandleVerifier [0x0108CFAD+181357]
+	GetHandleVerifier [0x01077458+92440]
+	GetHandleVerifier [0x01077600+92864]
+	GetHandleVerifier [0x01061FF0+5296]
+	BaseThreadInitThunk [0x76987BA9+25]
+	RtlInitializeExceptionChain [0x77C6C36B+107]
+	RtlClearBits [0x77C6C2EF+191]
+
+2025-05-22 02:39:21,320 - IoT_WhatsApp - ERROR - Failed to initialize Selenium, falling back to alternative method
+2025-05-22 02:39:21,320 - IoT_WhatsApp - INFO - Opening WhatsApp Web directly: https://web.whatsapp.com/send?phone=1234567890&text=%0A%20%20%20%20%20%20%20%20%20%20%20%20%F0%9F%9A%A8%20IoT%20TEMPERATURE%20ALERT%20%F0%9F%9A%A8%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20Current%20temperature%3A%2038.5%C2%B0C%0A%20%20%20%20%20%20%20%20%20%20%20%20Threshold%3A%2035.0%C2%B0C%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20Action%20required%3A%20Check%20cooling%20system%0A%20%20%20%20%20%20%20%20%20%20%20%20Device%20ID%3A%20TempSensor01%0A%20%20%20%20%20%20%20%20%20%20%20%20Location%3A%20Server%20Room%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20Alert%20time%3A%202025-05-22%2002%3A38%3A13%0A%20%20%20%20%20%20%20%20%20%20%20%20
+2025-05-22 02:39:21,474 - IoT_WhatsApp - INFO - Waiting for WhatsApp Web to load...
+2025-05-22 02:39:51,476 - IoT_WhatsApp - INFO - Attempting to send message via keyboard press...
+2025-05-22 02:39:54,581 - IoT_WhatsApp - INFO - Alternative message sent to +1234567890
+2025-05-22 02:39:59,591 - IoT_WhatsApp - INFO - Sending immediate message to 919080610799
+2025-05-22 02:39:59,591 - IoT_WhatsApp - ERROR - Failed to send immediate message to 919080610799: Country Code Missing in Phone Number!
+2025-05-22 02:39:59,592 - IoT_WhatsApp - INFO - Trying alternative method...
+2025-05-22 02:39:59,592 - IoT_WhatsApp - INFO - Opening WhatsApp Web directly: https://web.whatsapp.com/send?phone=919080610799&text=This%20is%20a%20follow-up%20message%20to%20the%20temperature%20alert.
+2025-05-22 02:39:59,622 - IoT_WhatsApp - INFO - Waiting for WhatsApp Web to load...
+2025-05-22 02:40:29,625 - IoT_WhatsApp - INFO - Attempting to send message via keyboard press...
+2025-05-22 02:40:32,727 - IoT_WhatsApp - INFO - Alternative message sent to 919080610799
+2025-05-22 02:40:44,720 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:40:44,720 - WDM - INFO - ====== WebDriver manager ======
+2025-05-22 02:40:46,274 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:40:47,099 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:40:47,857 - WDM - INFO - Driver [C:\Users\BOOBATHIRAJA.K.M\.wdm\drivers\chromedriver\win64\136.0.7103.113\chromedriver-win32/chromedriver.exe] found in cache
+2025-05-22 02:40:55,731 - IoT_WhatsApp - ERROR - Failed to initialize Selenium WebDriver: Message: session not created: probably user data directory is already in use, please specify a unique value for --user-data-dir argument, or don't use --user-data-dir
+Stacktrace:
+	GetHandleVerifier [0x0106FC03+61635]
+	GetHandleVerifier [0x0106FC44+61700]
+	(No symbol) [0x00E905D3]
+	(No symbol) [0x00EC38AF]
+	(No symbol) [0x00EBF6C9]
+	(No symbol) [0x00F08DF3]
+	(No symbol) [0x00F0880A]
+	(No symbol) [0x00EFD096]
+	(No symbol) [0x00ECC840]
+	(No symbol) [0x00ECD6A4]
+	GetHandleVerifier [0x012F4523+2701795]
+	GetHandleVerifier [0x012EFCA6+2683238]
+	GetHandleVerifier [0x0130A9EE+2793134]
+	GetHandleVerifier [0x010868C5+155013]
+	GetHandleVerifier [0x0108CFAD+181357]
+	GetHandleVerifier [0x01077458+92440]
+	GetHandleVerifier [0x01077600+92864]
+	GetHandleVerifier [0x01061FF0+5296]
+	BaseThreadInitThunk [0x76987BA9+25]
+	RtlInitializeExceptionChain [0x77C6C36B+107]
+	RtlClearBits [0x77C6C2EF+191]
+
+2025-05-22 02:40:55,732 - IoT_WhatsApp - ERROR - Failed to initialize Selenium, falling back to alternative method
+2025-05-22 02:40:55,733 - IoT_WhatsApp - INFO - Opening WhatsApp Web directly: https://web.whatsapp.com/send?phone=1234567890&text=%0A%20%20%20%20%20%20%20%20%20%20%20%20%F0%9F%9A%A8%20IoT%20TEMPERATURE%20ALERT%20%F0%9F%9A%A8%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20Current%20temperature%3A%2038.5%C2%B0C%0A%20%20%20%20%20%20%20%20%20%20%20%20Threshold%3A%2035.0%C2%B0C%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20Action%20required%3A%20Check%20cooling%20system%0A%20%20%20%20%20%20%20%20%20%20%20%20Device%20ID%3A%20TempSensor01%0A%20%20%20%20%20%20%20%20%20%20%20%20Location%3A%20Server%20Room%0A%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20%20Alert%20time%3A%202025-05-22%2002%3A40%3A44%0A%20%20%20%20%20%20%20%20%20%20%20%20
+2025-05-22 02:40:55,833 - IoT_WhatsApp - INFO - Waiting for WhatsApp Web to load...
+2025-05-22 02:41:25,835 - IoT_WhatsApp - INFO - Attempting to send message via keyboard press...
+2025-05-22 02:41:28,961 - IoT_WhatsApp - INFO - Alternative message sent to +1234567890
+2025-05-22 02:41:33,963 - IoT_WhatsApp - INFO - Sending immediate message to 919080610799
+2025-05-22 02:41:33,963 - IoT_WhatsApp - ERROR - Failed to send immediate message to 919080610799: Country Code Missing in Phone Number!
+2025-05-22 02:41:33,964 - IoT_WhatsApp - INFO - Trying alternative method...
+2025-05-22 02:41:33,964 - IoT_WhatsApp - INFO - Opening WhatsApp Web directly: https://web.whatsapp.com/send?phone=919080610799&text=This%20is%20a%20follow-up%20message%20to%20the%20temperature%20alert.
+2025-05-22 02:41:33,992 - IoT_WhatsApp - INFO - Waiting for WhatsApp Web to load...
+2025-05-22 02:42:40,442 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:42:40,443 - WDM - INFO - ====== WebDriver manager ======
+2025-05-22 02:42:42,144 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:42:42,945 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:42:43,755 - WDM - INFO - Driver [C:\Users\BOOBATHIRAJA.K.M\.wdm\drivers\chromedriver\win64\136.0.7103.113\chromedriver-win32/chromedriver.exe] found in cache
+2025-05-22 02:43:06,649 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 02:43:06,649 - WDM - INFO - ====== WebDriver manager ======
+2025-05-22 02:43:07,891 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:43:08,821 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 02:43:09,548 - WDM - INFO - Driver [C:\Users\BOOBATHIRAJA.K.M\.wdm\drivers\chromedriver\win64\136.0.7103.113\chromedriver-win32/chromedriver.exe] found in cache
+2025-05-22 02:43:09,549 - IoT_WhatsApp - ERROR - Failed to initialize Selenium WebDriver: WebDriver.__init__() got multiple values for argument 'options'
+2025-05-22 02:43:09,550 - IoT_WhatsApp - ERROR - Failed to initialize Selenium, falling back to alternative method
+2025-05-22 02:43:09,550 - IoT_WhatsApp - INFO - Opening WhatsApp Web directly: https://web.whatsapp.com/send?phone=919080610799&text=%0A%20%20%20%20%20%20%20%20%F0%9F%9A%A8%20IoT%20TEMPERATURE%20ALERT%20%F0%9F%9A%A8%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Current%20temperature%3A%2038.5%C2%B0C%0A%20%20%20%20%20%20%20%20Threshold%3A%2035.0%C2%B0C%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Action%20required%3A%20Check%20cooling%20system%0A%20%20%20%20%20%20%20%20Device%20ID%3A%20TempSensor01%0A%20%20%20%20%20%20%20%20Location%3A%20Server%20Room%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Alert%20time%3A%202025-05-22%2002%3A43%3A06%0A%20%20%20%20%20%20%20%20
+2025-05-22 02:43:09,652 - IoT_WhatsApp - INFO - Waiting for WhatsApp Web to load...
+2025-05-22 02:43:39,655 - IoT_WhatsApp - INFO - Attempting to send message via keyboard press...
+2025-05-22 02:43:44,758 - IoT_WhatsApp - INFO - Alternative message sent to 919080610799
+2025-05-22 07:43:43,342 - IoT_WhatsApp - INFO - WhatsApp messenger initialized
+2025-05-22 07:43:43,343 - WDM - INFO - ====== WebDriver manager ======
+2025-05-22 07:43:46,017 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 07:43:47,300 - WDM - INFO - Get LATEST chromedriver version for google-chrome
+2025-05-22 07:43:48,532 - WDM - INFO - Driver [C:\Users\BOOBATHIRAJA.K.M\.wdm\drivers\chromedriver\win64\136.0.7103.113\chromedriver-win32/chromedriver.exe] found in cache
+2025-05-22 07:43:48,534 - IoT_WhatsApp - ERROR - Failed to initialize Selenium WebDriver: WebDriver.__init__() got multiple values for argument 'options'
+2025-05-22 07:43:48,535 - IoT_WhatsApp - ERROR - Failed to initialize Selenium, falling back to alternative method
+2025-05-22 07:43:48,535 - IoT_WhatsApp - INFO - Opening WhatsApp Web directly: https://web.whatsapp.com/send?phone=919080610799&text=%0A%20%20%20%20%20%20%20%20%F0%9F%9A%A8%20IoT%20TEMPERATURE%20ALERT%20%F0%9F%9A%A8%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Current%20temperature%3A%2038.5%C2%B0C%0A%20%20%20%20%20%20%20%20Threshold%3A%2035.0%C2%B0C%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Action%20required%3A%20Check%20cooling%20system%0A%20%20%20%20%20%20%20%20Device%20ID%3A%20TempSensor01%0A%20%20%20%20%20%20%20%20Location%3A%20Server%20Room%0A%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20Alert%20time%3A%202025-05-22%2007%3A43%3A43%0A%20%20%20%20%20%20%20%20
+2025-05-22 07:43:48,890 - IoT_WhatsApp - INFO - Waiting for WhatsApp Web to load...
+2025-05-22 07:44:18,891 - IoT_WhatsApp - INFO - Attempting to send message via keyboard press...
+2025-05-22 07:44:24,024 - IoT_WhatsApp - INFO - Alternative message sent to 919080610799
